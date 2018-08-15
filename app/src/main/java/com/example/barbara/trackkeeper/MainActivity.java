@@ -13,11 +13,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,17 +40,12 @@ public class MainActivity extends AppCompatActivity {
     BluetoothSocket meuSocket = null;
     BluetoothDevice meuDevice = null;
 
-    ArrayAdapter list = null;
-    ArrayAdapter listDevice = null;
-
-    StringBuilder dadosBlu = new StringBuilder();
-
     Handler mHandler;
     ConnectedThread connectedThread;
 
     static Intent retorna = new Intent();
 
-    boolean conexao = false;
+    boolean connection = false;
 
     UUID MYUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
@@ -72,12 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),"Procurando...",Toast.LENGTH_SHORT).show();
                 doDiscovery();
-                //v.setVisibility(View.GONE);
             }
         });
 
-        listDevice = new ArrayAdapter(this, R.layout.device_name);
-        list = new ArrayAdapter(this, R.layout.device_name);
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(mReceiver, filter);
@@ -93,22 +82,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
-
-           // mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-            // If there are paired devices
-            if (pairedDevices.size() > 0) {
-                // Loop through paired devices
-                for (BluetoothDevice device : pairedDevices) {
-                    // Add the name and address to an array adapter to show in a ListView
-                    list.add(device.getName() + "\n" + device.getAddress());
-                }
-                Toast.makeText(getApplicationContext(),"Dispositivos pareados",Toast.LENGTH_SHORT).show();
-            }
-            ListView listView = (ListView) findViewById(R.id.list);
-            listView.setAdapter(list);
-            listView.setOnItemClickListener(mDeviceClickListener);
-
     }
 
     @Override
@@ -121,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Dispositivos pareados",Toast.LENGTH_SHORT).show();
                     mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                     Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                    ArrayAdapter list = new ArrayAdapter(this, R.layout.device_name);
                     // If there are paired devices
                     if (pairedDevices.size() > 0) {
                         // Loop through paired devices
@@ -149,23 +123,23 @@ public class MainActivity extends AppCompatActivity {
                         meuSocket = meuDevice.createRfcommSocketToServiceRecord(MYUID);
                         meuSocket.connect();
 
-                       connectedThread = new ConnectedThread(meuSocket);
+                        connectedThread = new ConnectedThread(meuSocket);
                         connectedThread.start();
 
 
                         Toast.makeText(getApplicationContext(),"Conectado com Dispositivo Portátil",Toast.LENGTH_SHORT).show();
-                        conexao = true;
+                        connection = true;
 
-                        Intent waitt = new Intent(MainActivity.this, Wait.class);
-                        waitt.putExtra("Status",conexao);
-                        startActivity(waitt);
+                        Intent wait = new Intent(MainActivity.this, Wait.class);
+                        wait.putExtra("Status",connection);
+                        startActivity(wait);
 
                     }catch (IOException erro){
-                        conexao = false;
+                        connection = false;
                         // Unable to connect; close the socket and get out
                         try {
                             meuSocket.close();
-                            conexao = false;
+                            connection = false;
                             Toast.makeText(getApplicationContext(),"Falha na conexão",Toast.LENGTH_SHORT).show();
                         } catch (IOException closeException) { }
                     }
@@ -185,22 +159,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Make sure we're not doing discovery anymore
-        if (mBluetoothAdapter != null) {
+        if (mBluetoothAdapter != null)
             mBluetoothAdapter.cancelDiscovery();
-        }
 
-
-           /* mBluetoothAdapter.disable();
-            Toast.makeText(getApplicationContext(),"Bluetooth foi desativado",Toast.LENGTH_SHORT).show();*/
         // Unregister broadcast listeners
         this.unregisterReceiver(mReceiver);
     }
 
     private void doDiscovery() {
         // If we're already discovering, stop it
-        if (mBluetoothAdapter.isDiscovering()) {
+        if (mBluetoothAdapter.isDiscovering())
             mBluetoothAdapter.cancelDiscovery();
-        }
+
         // Request discover from BluetoothAdapter
         mBluetoothAdapter.startDiscovery();
     }
@@ -216,19 +186,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //sendData("S");           //send
-            }
-        }, c);
-
     }
 
     // Create a BroadcastReceiver for ACTION_FOUND
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            ArrayAdapter listDevice = new ArrayAdapter(context, R.layout.device_name);
             // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
@@ -246,14 +210,12 @@ public class MainActivity extends AppCompatActivity {
     public class BluetoothLostReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
 
-            int i;
-            if(BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction())&& conexao==true)
+            if(BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction())&& connection==true)
             {
-                conexao=false;
-                for (i=0;i<=1;i++) {
+                connection = false;
+                for (int i = 0; i <= 1; i++) {
                     Toast.makeText(getApplicationContext(), "Conexão Perdida", Toast.LENGTH_SHORT).show();
-                    Vibrar();
-
+                    Vibrate();
 
                     try {
                         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -264,23 +226,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     delay(1500);
+
+                    if (i == 2) {
+                        Intent wait = new Intent(MainActivity.this, Wait.class);
+                        wait.putExtra("Status",connection);
+                        startActivity(wait);
+                    }
                 }
-
-                if (i==2) {
-
-                    Intent waitt1 = new Intent(MainActivity.this, Wait.class);
-                    waitt1.putExtra("Status",conexao);
-                    startActivity(waitt1);
-
-                    //Intent Menu1 = new Intent(MainActivity.this, MenuConect.class);
-                    //startActivity(Menu1);
-                }
-                //((Your Main Activity) Activity()).finish();
-               /* if(Global.PosPrinterDeviceName != null && !Global.PosPrinterDeviceName.equals(""))
-                    main.connectPrinter(Global.PosPrinterDeviceName);*/
-            }else
-            {
-                //Global.tryBluetoothReconnect = true;
             }
         }
     }
@@ -288,12 +240,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void Vibrar()
+    private void Vibrate()
     {
-       Vibrator rr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long milliseconds = 1000;//'30' é o tempo em milissegundos, é basicamente o tempo de duração da vibração. portanto, quanto maior este numero, mais tempo de vibração você irá ter
-        rr.vibrate(milliseconds);
-
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
     }
 
     protected AdapterView.OnItemClickListener mDeviceClickListener = new AdapterView.OnItemClickListener() {
@@ -312,88 +262,44 @@ public class MainActivity extends AppCompatActivity {
     };
 
    private class ConnectedThread extends Thread {
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
+       private final InputStream mmInStream;
+       private final OutputStream mmOutStream;
 
-        public ConnectedThread(BluetoothSocket socket) {
+       public ConnectedThread(BluetoothSocket socket) {
 
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
+           InputStream tmpIn = null;
+           OutputStream tmpOut = null;
 
-            // Get the input and output streams, using temp objects because
-            // member streams are final
-            try {
-                tmpIn = socket.getInputStream();
-                tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+           // Get the input and output streams, using temp objects because
+           // member streams are final
+           try {
+               tmpIn = socket.getInputStream();
+               tmpOut = socket.getOutputStream();
+           } catch (IOException e) {
+           }
 
-            mmInStream = tmpIn;
-            mmOutStream = tmpOut;
-        }
+           mmInStream = tmpIn;
+           mmOutStream = tmpOut;
+       }
 
-        public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
+       public void run() {
+           byte[] buffer = new byte[1024];  // buffer store for the stream
+           int bytes; // bytes returned from read()
 
-            // Keep listening to the InputStream until an exception occurs
-            while (true) {
-                try {
-                    // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
-                    String trans = new String(buffer , 0, bytes);
-                    Toast.makeText(getApplicationContext(),trans,Toast.LENGTH_LONG).show();
-                    // Send the obtained bytes to the UI activity
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, -1, trans).sendToTarget();
-                } catch (IOException e) {
-                    break;
-                }
-            }
-        }
-
-        /* Call this from the main activity to send data to the remote device*/
-        public void write(String output) {
-            byte[] msgbuffer = output.getBytes();
-            try {
-                mmOutStream.write(msgbuffer);
-            } catch (IOException e) { }
-        }
-
-
-    }
-
-    class LooperThread extends Thread {
-        public Handler mHandler;
-
-        public void run() {
-            Looper.prepare();
-
-            mHandler = new Handler() {
-                public void handleMessage(Message msg) {
-                    if (msg.what == MESSAGE_READ) {
-
-                        String recebidos = (String) msg.obj;
-
-                        dadosBlu.append(recebidos);
-                        int fim = dadosBlu.indexOf(" ");
-
-                        if (fim > 0) {
-
-                            String dadosCom = dadosBlu.substring(0, fim);
-                            int tama = dadosCom.length();
-
-                            if (dadosBlu.charAt(0) == ' ') {
-
-                                String dadosfin = dadosBlu.substring(1, tama);
-                                Log.d("RECEBIDOS", dadosfin);
-                            }
-                        }
-
-                    }
-                }
-            };
-
-            Looper.loop();
-        }
-    }
+           // Keep listening to the InputStream until an exception occurs
+           while (true) {
+               try {
+                   // Read from the InputStream
+                   bytes = mmInStream.read(buffer);
+                   String trans = new String(buffer, 0, bytes);
+                   Toast.makeText(getApplicationContext(), trans, Toast.LENGTH_LONG).show();
+                   // Send the obtained bytes to the UI activity
+                   mHandler.obtainMessage(MESSAGE_READ, bytes, -1, trans).sendToTarget();
+               } catch (IOException e) {
+                   break;
+               }
+           }
+       }
+   }
 }
 
