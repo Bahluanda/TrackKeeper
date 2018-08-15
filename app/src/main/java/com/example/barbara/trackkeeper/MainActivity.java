@@ -39,13 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int MESSAGE_READ = 3;
     private static final String ENDEREÇO_MAC = null;
 
-    private ArrayAdapter listDevice = new ArrayAdapter(this, R.layout.device_name);
-    private ArrayAdapter list = new ArrayAdapter(this, R.layout.device_name);
-
     BluetoothAdapter mBluetoothAdapter = null;
     BluetoothSocket meuSocket = null;
     BluetoothDevice meuDevice = null;
 
+    ArrayAdapter list = null;
+    ArrayAdapter listDevice = null;
 
     StringBuilder dadosBlu = new StringBuilder();
 
@@ -77,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listDevice = new ArrayAdapter(this, R.layout.device_name);
+        list = new ArrayAdapter(this, R.layout.device_name);
         // Register the BroadcastReceiver
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(mReceiver, filter);
@@ -194,21 +195,6 @@ public class MainActivity extends AppCompatActivity {
         // Unregister broadcast listeners
         this.unregisterReceiver(mReceiver);
     }
-
-   /* protected void onPause(){
-
-        if (isFinishing()) {
-
-
-            if (mBluetoothAdapter.isEnabled()) {
-                Intent dinableBtIntent = new Intent(BluetoothAdapter.ACTION_STATE_CHANGED);
-                startActivityForResult(dinableBtIntent, 0);
-                mBluetoothAdapter.disable();
-                Toast.makeText(getApplicationContext(), "Bluetooth foi desativado", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }*/
 
     private void doDiscovery() {
         // If we're already discovering, stop it
@@ -374,45 +360,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-    /*private class ConnectThread extends Thread{
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevise;
-
-        public ConnectThread(BluetoothDevice device){
-
-            BluetoothSocket tmp = null;
-            mmDevise = device;
-
-            try{
-                tmp = device.createInsecureRfcommSocketToServiceRecord(MYUID);
-
-            }catch (IOException e){}
-            mmSocket = tmp;
-        }
-        public void run(){
-            mBluetoothAdapter.cancelDiscovery();
-            try{
-                mmSocket.connect();
-                Toast.makeText(getApplicationContext(),"Conectado com :"+ MAC,Toast.LENGTH_SHORT).show();
-            }catch (IOException e){
-                try {
-                    mmSocket.close();
-                    Toast.makeText(getApplicationContext(),"Falha na conexão",Toast.LENGTH_SHORT).show();
-
-                }catch (IOException erro){}
-                return;
-            }
-
-        }
-
-        public void cancel(){
-            try {
-                mmSocket.close();
-            }catch (IOException e){}
-        }
-
-    }*/
 
     class LooperThread extends Thread {
         public Handler mHandler;
