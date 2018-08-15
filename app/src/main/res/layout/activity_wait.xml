@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_wait"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.barbara.trackkeeper.Wait">
+
+    <ImageView
+        android:id="@+id/icoo"
+        android:layout_marginTop="64dp"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:src="@drawable/ic_hi"
+        android:layout_centerInParent="true"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mantendo rastro"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_above="@id/icoo"
+        android:gravity="center"
+        android:textAllCaps="true"
+        />
+
+
+
+</RelativeLayout>

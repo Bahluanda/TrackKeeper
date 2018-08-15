@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_menu_conect"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="52dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
+    tools:context="com.example.barbara.trackkeeper.MenuConect">
+
+
+    <ImageView
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:id="@+id/nott"
+        android:src="@drawable/cellnot"
+        android:layout_marginTop="8dp"
+        />
+
+    <Button
+        android:id="@+id/conectar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="conectar novamente"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="72dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu de conexão perdida"
+        android:textAllCaps="true"
+        android:textSize="17sp"
+        android:textColor="#000000"
+        android:id="@+id/meme"
+        android:layout_alignBottom="@+id/nott"
+        android:layout_toEndOf="@+id/nott"
+        android:layout_marginBottom="33dp" />
+
+    <Button
+        android:id="@+id/estdis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="intensidade da potência "
+        android:layout_below="@+id/nott"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="93dp" />
+
+
+</RelativeLayout>
