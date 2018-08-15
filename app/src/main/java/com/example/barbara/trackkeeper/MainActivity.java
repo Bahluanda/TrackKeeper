@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
                     delay(1500);
 
-                    if (i == 2) {
+                    if (i == 1) {
                         Intent wait = new Intent(MainActivity.this, Wait.class);
                         wait.putExtra("Status",connection);
                         startActivity(wait);
