@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".Conecta"
+            android:name=".Connection"
             android:theme="@style/AlertDialog.AppCompat" />
         <activity android:name=".Distancy" />
         <activity android:name=".Alertamenu" />

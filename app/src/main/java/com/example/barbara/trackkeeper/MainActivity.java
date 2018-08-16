@@ -153,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -237,9 +235,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void Vibrate()
     {
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -250,14 +245,13 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView av, View v, int arg2, long arg3) {
 
             String info = ((TextView) v).getText().toString();
-            String endereço_mac = info.substring(info.length() - 17);
+            String macAddress = info.substring(info.length() - 17);
 
-            retorna.putExtra(ENDEREÇO_MAC,endereço_mac);
+            retorna.putExtra(ENDEREÇO_MAC,macAddress);
 
             Toast.makeText(getApplicationContext(),"Aguarde conexão...",Toast.LENGTH_SHORT).show();
-            Intent lista = new Intent(MainActivity.this,Conecta.class);
+            Intent lista = new Intent(MainActivity.this, Connection.class);
             startActivityForResult(lista, REQUEST_CON);
-
         }
     };
 

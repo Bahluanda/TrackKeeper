@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import static com.example.barbara.trackkeeper.MainActivity.retorna;
 
-public class Conecta extends Activity {
+public class Connection extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

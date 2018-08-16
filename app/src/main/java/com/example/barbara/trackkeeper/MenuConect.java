@@ -16,7 +16,6 @@ public class MenuConect extends AppCompatActivity {
         Button distancia = (Button) findViewById(R.id.estdis);
         Button conec = (Button) findViewById(R.id.conectar);
 
-
         distancia.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -27,12 +26,9 @@ public class MenuConect extends AppCompatActivity {
             }
         });
 
-
         conec.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
-
 
                 Intent mainA = new Intent(MenuConect.this, MainActivity.class);
                 startActivity(mainA);

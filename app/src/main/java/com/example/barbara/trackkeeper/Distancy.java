@@ -53,18 +53,16 @@ public class Distancy extends AppCompatActivity {
 
             String action = intent.getAction();
             if(BluetoothDevice.ACTION_FOUND.equals(action)) {
+
                 double rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
                 double Pw = (Math.pow(10,(rssi/10))/1000);
+
                 String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
                 TextView rssi_msg = (TextView) findViewById(R.id.distan);
+
                 rssi_msg.setText(rssi_msg.getText() + name + " => " + rssi + "dBm\n");
                 rssi_msg.setText(rssi_msg.getText() + " => " + Pw + "W\n\n");
-               // Toast.makeText(getApplicationContext(),rssi+"dBm",Toast.LENGTH_LONG).show();
             }
         }
     };
-
-
-
-
 }
