@@ -6,31 +6,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MenuConect extends AppCompatActivity {
+public class MenuConnect extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_conect);
+        setContentView(R.layout.activity_menu_connect);
 
-        Button distancia = (Button) findViewById(R.id.estdis);
-        Button conec = (Button) findViewById(R.id.conectar);
+        Button intensity = (Button) findViewById(R.id.estdis);
+        Button connect = (Button) findViewById(R.id.conectar);
 
-        distancia.setOnClickListener(new View.OnClickListener(){
+        intensity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
 
-                Intent DisIntent = new Intent(MenuConect.this, Distancy.class);
+                Intent DisIntent = new Intent(MenuConnect.this, Distancy.class);
                 startActivity(DisIntent);
-
             }
         });
 
-        conec.setOnClickListener(new View.OnClickListener(){
+        connect.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
 
-                Intent mainA = new Intent(MenuConect.this, MainActivity.class);
+                Intent mainA = new Intent(MenuConnect.this, MainActivity.class);
                 startActivity(mainA);
                 finish();
             }

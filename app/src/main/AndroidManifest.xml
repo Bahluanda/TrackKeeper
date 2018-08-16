@@ -26,8 +26,7 @@
             android:name=".Connection"
             android:theme="@style/AlertDialog.AppCompat" />
         <activity android:name=".Distancy" />
-        <activity android:name=".Alertamenu" />
-        <activity android:name=".MenuConect" />
+        <activity android:name=".MenuConnect" />
         <activity android:name=".Wait"></activity>
     </application>
 

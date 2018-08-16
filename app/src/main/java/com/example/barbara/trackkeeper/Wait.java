@@ -18,7 +18,7 @@ public class Wait extends AppCompatActivity {
         if (connection == true){
             delay(500);
         }else {
-            Intent menu = new Intent(Wait.this, MenuConect.class);
+            Intent menu = new Intent(Wait.this, MenuConnect.class);
             startActivity(menu);
             finish();
         }

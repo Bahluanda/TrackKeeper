@@ -15,8 +15,6 @@ import android.widget.TextView;
 public class Distancy extends AppCompatActivity {
 
     private BluetoothAdapter BTAdapter = BluetoothAdapter.getDefaultAdapter();
-    double receb;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +27,8 @@ public class Distancy extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 doDiscovery();
-                //v.setVisibility(View.GONE);
             }
-
         });
-
-
-
     }
 
     private void doDiscovery() {
